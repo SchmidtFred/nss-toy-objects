@@ -36,7 +36,6 @@ const toys = [
 ]
 
 const ball = {
-    id: 4,
     name: "Pink Round Ball",
     maker: "We Make Balls",
     color: "pink",
@@ -47,7 +46,6 @@ const ball = {
 }
 
 const frisbee = {
-    id: 5,
     name: "Frisbee",
     maker: "Frisbee Co.",
     color: "frisbee blue",
@@ -56,8 +54,21 @@ const frisbee = {
     price: 9.99
 }
 
-toys.push(ball);
-toys.push(frisbee);
+const addToyToInventory = (inventoryArray, toyObject) => {
+    //get index of highest id'd array object
+    const lastIndex = inventoryArray.length - 1;
+    // get the object
+    const currentLastToy = inventoryArray[lastIndex];
+    //get its id
+    const currMaxId = currentLastToy.id;
+    //put it on the new toy but plus 1
+    toyObject.id = currMaxId + 1;
+    inventoryArray.push(toyObject);
+}
+
+addToyToInventory(toys, ball);
+addToyToInventory(toys, frisbee);
+
 
 for (toy of toys) {
     toy.price += toy.price * 0.05;
