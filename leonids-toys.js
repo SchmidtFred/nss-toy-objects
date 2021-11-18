@@ -74,3 +74,14 @@ for (toy of toys) {
     toy.price += toy.price * 0.05;
     console.log(`The ${toy.color} ${toy.name} is $${toy.price}.`);
 }
+
+const removeProduct = (inventoryArray, idToRemove) => {
+    for (const item of inventoryArray) {
+        if (item.id === idToRemove) {
+            inventoryArray.splice(inventoryArray.indexOf(item), 1);
+        }
+    }
+}
+
+removeProduct(toys, 2);
+console.log(toys);
