@@ -1,7 +1,7 @@
 //create my arrays
 const toyPrices = new Map();
 //create toys array for inventory
-const toys = [];
+const toys = new Set();
 
 //my toys to add to the inventory
 const paddleBall = {
@@ -51,40 +51,45 @@ const frisbee = {
 };
 
 // add the toys to inventory and the price to the price map
-const addToyToInventory = (inventoryArray, toyObject, price) => {
+const addToyToInventory = (inventorySet, toyObject, price) => {
 	//make id of 1 if the inventory array is empty. If it is not empty use code to make the most up to date id number
-	if (inventoryArray.length === 0) {
+	if (inventorySet.size === 0) {
 		toyObject.id = 1;
 	} else {
-		//get index of highest id'd array object
-		const lastIndex = inventoryArray.length - 1;
-		// get the object
-		const currentLastToy = inventoryArray[lastIndex];
-		//get its id
-		const currMaxId = currentLastToy.id;
-		//put it on the new toy but plus 1
-		toyObject.id = currMaxId + 1;
+		//find highest id
+        let curMaxId = 0;
+        for (const toy of inventorySet) {
+            if (toy.id > curMaxId) {
+                curMaxId = toy.id;
+            }
+        }
+		toyObject.id = curMaxId + 1;
 	}
 	//add price to map
-	toyPrices.set(toyObject, price);
+	if (!toyPrices.has(toyObject)) {
+		toyPrices.set(toyObject, price);
+	}
 	//add to to inventory
-	inventoryArray.push(toyObject);
+	inventorySet.add(toyObject);
 };
+
+// Add the toys!
 addToyToInventory(toys, paddleBall, 9.99);
 addToyToInventory(toys, furby, 129.99);
 addToyToInventory(toys, doll, 19.99);
 addToyToInventory(toys, ball, 5);
 addToyToInventory(toys, frisbee, 9.99);
+addToyToInventory(toys, paddleBall, 10000000);
 
 for (let [toy, price] of toyPrices) {
 	price += price * 0.05;
 	console.log(`The ${toy.color} ${toy.name} is $${price}.`);
 }
 
-const removeProduct = (inventoryArray, idToRemove) => {
-	for (const item of inventoryArray) {
+const removeProduct = (inventorySet, idToRemove) => {
+	for (const item of inventorySet) {
 		if (item.id === idToRemove) {
-			inventoryArray.splice(inventoryArray.indexOf(item), 1);
+			inventorySet.delete(item);
 			toyPrices.delete(item);
 		}
 	}
